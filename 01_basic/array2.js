@@ -21,3 +21,7 @@ fetch("http://192.168.0.83/HelloJSP/replyList.do?bno=145")
       });
   })
   .catch(console.log);
+
+//map (mapping)
+//A -> A'
+// {name, age, point} => {name, point}

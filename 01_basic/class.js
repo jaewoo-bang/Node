@@ -32,3 +32,4 @@ class Student {
 
 let std2 = new Student(1235, "김민수", 180);
 console.log(std1.stdNo, std1.stdName);
+console.log(std2.stdNo, std1.stdName);

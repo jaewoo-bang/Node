@@ -4,6 +4,7 @@ fetch("http://192.168.0.83/HelloJSP/mock.json")
     console.log(data); // A -> A'
     data
       .map((elem) => {
+        //속성 변환 map
         // fn, ln => name
         const newElem = {
           no: elem.id,
