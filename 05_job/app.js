@@ -2,8 +2,10 @@ const express = require("express");
 require("dotenv").config({
   path: "./.env",
 });
+const sql = require("./sql");
+const xlsx = require("xlsx");
 const nodemail = require("./nodemail");
-const process = require("process");
+//const process = require("process");
 
 console.log(process.env);
 
@@ -51,6 +53,25 @@ app.post("/mail", (req, resp) => {
   }; //from, to, subject, text(html)
   nodemail.mailSend(data);
   resp.send(data);
+});
+
+// "/excel_down" => customers 테이블의 데이터를 logs/customer2.xlsx로 저장.
+app.get("/excel_down", async (req, resp) => {
+  async function db_to_excel() {
+    const workbook = xlsx.utils.book_new(); //workbook 생성.
+    let resultSet = await sql.execute("select * from customers");
+    console.log(resultSet);
+    // 배열 => sheet : json_to_sheet. 구조: workbook > sheet > cell
+    const firstSheet = xlsx.utils.json_to_sheet(resultSet, {
+      header: ["id", "name", "email", "phone", "address"],
+    });
+
+    xlsx.utils.book_append_sheet(workbook, firstSheet, "Customers"); // 시트생성.
+    xlsx.writeFile(workbook, "./logs/customers2.xlsx"); //엑셀파일생성.
+    // 시트 -> workbook -> customers.xlsx
+  }
+  db_to_excel();
+  resp.json(resultSet);
 });
 
 app.listen(3000, () => {

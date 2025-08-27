@@ -17,6 +17,10 @@ const logger = winston.createLogger({
     new winston.transports.File({ filename: "logs/sample.log" }),
   ],
 });
-logger.info("로그인성공");
-logger.warn("잘못된 요청입니다");
-logger.error("데이터베이스 연결 오류");
+// logger.info("로그인성공");
+// logger.warn("잘못된 요청입니다");
+// logger.error("데이터베이스 연결 오류");
+
+module.exports = {
+  logger,
+};
