@@ -2,13 +2,34 @@
 const express = require("express");
 const parser = require("body-parser");
 const sql = require("./sql");
+const prodSql = require("./sql/sql"); // {productList:{query:``}, productDetail:{}}
+const cors = require("cors");
+//console.log(prodSql["imageList"].query);
 
 const app = express();
 app.use(parser.urlencoded()); // x-www-form-urlencoded
 app.use(parser.json());
+app.use(cors());
 
 app.get("/", (req, resp) => {
   resp.send("/ 실행");
+});
+
+// 상품쿼리.
+app.post("/api/:alias", async (req, resp) => {
+  // api?alias=dawdasd
+  let search = prodSql[req.params.alias].query;
+  let param = req.body.param; //[{product_id:9, type:1, path:test.jpg}], param :[2]
+
+  console.log(search);
+  console.log(param);
+
+  try {
+    let result = await sql.execute(search, param);
+    resp.json(result);
+  } catch (err) {
+    resp.json({ retCode: "error" });
+  }
 });
 
 //고객목록.
